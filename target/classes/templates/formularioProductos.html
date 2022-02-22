@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Producto</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">                           
+    
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/Images/favicon.png}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link  href="../static/css/form.css" th:href="@{css/formularioProductos.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style type="text/css">
+        body {
+            background: url(../Images/AdministradorFondo.png) repeat;
+            background-size: 84% 100%;
+            background-attachment: fixed;
+        }
+
+        .btn .btn-dark {
+            border-color: red !important;
+            color: tomato !important;
+        }
+
+        .lb1 {
+            font-weight: bold;
+        }
+        .container{
+            margin-top: 5%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+	<div th:include="/barra.html::header"></div>
+    <div class="container" >
+        <a th:href="@{/listar}" class="btn btn-dark">Atrás</a>
+    </div>
+    <div class="container mt-3" align="center">
+        <div class="col-sm-8" align="left">
+            <form th:action="@{/save}" th:object="${producto}" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Producto</h3>
+                    </div>
+                    <div th:if="${param.existProduct}" class="alert alert-danger"> El producto ya existe</div>
+
+                    <div class="card-body">
+                        <div class="form-group" style="display:none;">
+                            <label>ID</label>
+                            <input th:field="*{id}" type="text" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="lb1">Nombre</label>
+                            <input th:field="*{nombre}" placeholder="Nombre" type="text" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="lb1">Descripción</label>
+                            <textarea th:field="*{descripcion}" placeholder="Descripción del producto..." class="form-control"/></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="lb1">Estado</label>
+                            <select name="estado" id="estado" th:field="*{estado}" class="form-select" required>
+                                <option value="" selected="select">--Seleccionar--</option>
+                                <option value="Disponible">Disponible</option>
+                                <option value="Agotado">Agotado</option>
+                                <option value="No disponible">No disponible</option>
+                                <option value="Oferta">Oferta</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="lb1">Categoría</label>
+                            <select name="categoria" id="categoria" th:field="*{categoria}" class="form-select required" required>
+                                <option value="">--Seleccionar--</option>
+                                <option value="Desayuno">Desayuno</option>
+                                <option value="Postre">Postre</option>
+                                <option value="Onces">Onces</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="lb1">Precio</label>
+                            <input th:field="*{precio}" type="number" placeholder="Precio" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="lb1">Foto</label>
+                            <br><input class="form-control-file" type="file" name="file"/>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" value="Guardar" class="btn btn-success" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    
+</body>
+</html>

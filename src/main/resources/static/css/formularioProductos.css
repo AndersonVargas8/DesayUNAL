@@ -1,0 +1,12 @@
+body {
+  background: url(../Images/AdministradorFondo.png) repeat;
+  background-size:84% 100% ;
+  background-attachment: fixed;
+}
+.btn .btn-dark{
+    border-color:red !important;
+    color: tomato !important;
+}
+.lb1{
+    font-weight: bold;
+}

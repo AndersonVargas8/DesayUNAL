@@ -1,0 +1,22 @@
+body {
+  background: url(../Images/fondoClientes.png) repeat;
+  background-size:84% 100% ;
+  background-attachment: fixed;
+}
+.table {
+  background: whitesmoke;
+  border-radius: 5px;
+}
+.btn .btn-dark{
+    border-color:red !important;
+    color: tomato !important;
+}
+.descripcion{
+    width: 230px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.container{
+    margin-top: 5%;
+}

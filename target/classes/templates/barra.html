@@ -1,0 +1,60 @@
+<!-- Navigation -->
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom" style="position:fixed; top:0; width: 100%; z-index: 100;">
+        <a class="navbar-brand" th:href="@{/desayunal}" >
+          <img th:src="@{/Images/logo2.png}" width="150px" title="DesayUNAL"> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+         
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li th:if="${page == 'catalogo'}" class="nav-item active">
+              <li th:unless="${page == 'catalogo'}" class="nav-item"></li>
+              <a th:if="${logueado == true }" class="nav-link" th:href="@{/desayunal}">Catálogo</a>
+            </li>
+            <li th:if="${page == 'admin'}" class="nav-item active">
+              <li th:unless="${page == 'admin'}" class="nav-item"></li>
+              <a th:if="${logueado == true && usuarioConectado.role == 'Administrador'}" class="nav-link" th:href="@{/listar}">Administrar</a>
+            </li>
+            
+           
+            </ul>
+
+            
+             <!--BOTONES INICIAR SESIÓN Y REGISTRARSE-->
+            <a th:if="${logueado == false}" class="btn btn-outline-success my-2 my-sm-0" th:href="@{/login}">Iniciar Sesión</a>
+            <a th:if="${logueado == false}" class="btn btn-outline-light my-2 my-sm-0 ml-2" th:href="@{/signUp}" style="margin-right: 2%;">Registrarse</a>
+
+            <!-- BOTÓN CARRITO-->
+            <div class="nav-item" style="margin-right:-1%"> 
+              <a th:if="${logueado == true && page == 'catalogo'}" class="nav-link" th:href="@{/carrito}" title="Ver el carrito">
+                <i class="fa fa-shopping-cart" style="color:white; font-size: 20px;">
+                  
+                  <label style="color:orange;font-size: 12px; font-weight: bold;" id="contCarrito" th:text="${'('+contador+')'}"></label>
+                </i>
+              </a>
+            </div>
+            <!--DROPDOWN USUARIO  -->
+            <div th:if="${logueado == true}" class="nav-item dropdown" style="margin-right: 7%;">
+              
+              <a style="color:white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                 <i class="fa fa-user-circle" style="font-size: 20px;">
+                  <label style="font-family:calibri;font-weight: bold;cursor: pointer;" th:text="${usuarioConectado.getuserName}"></label> 
+                </i>  
+              </a>
+              
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                <a class="dropdown-item" th:href="@{/misCompras}">Mis compras</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a>
+              </div>
+            </div>
+            
+        </div>
+      </nav>
+</div>
