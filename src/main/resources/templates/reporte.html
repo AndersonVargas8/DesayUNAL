@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte ventas</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/Images/favicon.png}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="../static/css/index.css" th:href="@{/css/listarProductos.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <!--YEAR PICKER-->
+    <link rel="stylesheet" th:href="@{yearpicker.css}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+
+<!-- Navigation -->
+<div th:include="/barra.html::header"></div>
+<div class="row mr-0 pr-0">
+    <div class="col-sm-2 mr-0 pr-0 bg-dark">
+        <div th:include="/sideBar.html::sidebar"></div>
+    </div>
+    <div class="col-sm-9">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 mt-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body" th:each="producto:${masVendido}">
+                            <h5 class="card-title">Más vendido</h5>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="card-img-top" th:src="@{/uploaded/}+${producto.id}" alt="" height="70">
+                                </div>
+                                <div class="col">
+                                    <h6>
+                                        <td th:text="${producto.nombre}"></td>
+                                    </h6>
+                                    <p>Ventas:
+                                    <td th:text="${mayorVentas}"></td>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Ingresos mes</h5>
+                            <h4>
+                                <td th:text="${ingresoMes}"></td>
+                            </h4>
+                            <i class="icon ion-md-calendar " style="font-size: 20px;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Ingresos día</h5>
+                            <h4>
+                                <td th:text="${ingresoDia}"></td>
+                            </h4>
+                            <i class="fa fa-credit-card" style="font-size: 20px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row mt-5">
+                <div class="col-sm-5" id="pastel">
+                    <input class="form-control" type="hidden" id="pordes" th:value="${desayunos}">
+                    <input class="form-control" type="hidden" id="poronc" th:value="${onces}">
+                    <input class="form-control" type="hidden" id="porpos" th:value="${postres}">
+
+                    <script>
+                        console.log(document.getElementById('porpos').value);
+                        var desayunos = document.getElementById('pordes').value;
+                        var onces = document.getElementById('poronc').value;
+                        var postres = document.getElementById('porpos').value;
+                        Highcharts.chart('pastel', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Porcentajes de categorías'
+                            },
+                            subtitle: {
+                                text: 'Vendidos este mes'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                    showInLegend: true
+                                }
+                            },
+                            series: [{
+                                name: 'Brands',
+                                colorByPoint: true,
+                                data: [{
+                                    name: 'Desayunos',
+                                    y: parseInt(desayunos),
+
+                                }, {
+                                    name: 'Postres',
+                                    y: parseInt(postres)
+                                }, {
+                                    name: 'Onces',
+                                    y: parseInt(onces)
+                                }]
+                            }]
+                        });
+                    </script>
+                </div>
+                <div class="col-sm-7">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" style="width: 100%; height: 100%;">Usuarios frecuentes</h5>
+                            <div class="overflow-auto p-0" style="height: 325px;">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Ordenes</th>
+                                        <th scope="col">Ultima compra</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="usuario,status:${usuarioNombre}">
+                                        <th scope="row" th:text="${status.count}"></th>
+                                        <td th:text="${usuario}"></td>
+                                        <td th:text="${usuarioOrden[status.index]}"></td>
+                                        <td th:text="${usuarioHora[status.index]}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 px-3">
+                <div class="card px-0 mb-5" id="carta">
+                    <div class="card-header">
+                        <h4 >Lista de ventas &nbsp <label style="color: darkslategrey;" th:text="${titulo}"></label></h4>
+                        <select id="filtro"  class="btn btn-secondary dropdown-toggle mr-2" style="align-items: left;">
+                            <option value="">Filtrar...</option>
+                            <option value="dia">Día</option>
+                            <option value="mes">Mes</option>
+                            <option value="anio">Año</option>
+                        </select> 
+                        <input class="form-control border border-info" hidden type="date" style="width: 73px; display: inline;" id="inputDia" >
+                        
+                        <input class="form-control border border-warning" hidden type="month" style="width: 73px; display: inline;" id="inputMes">
+                        
+                        <select hidden id="inputAnio" class="btn btn-light dropdown-toggle border border-secondary" style="align-items: left;">
+                            <option value="">Año</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                        </select> 
+                        <label hidden id="espera">&nbsp Espere...</label>
+                        <script>
+                            $(document).ready(function(){
+                                $("#filtro").change(function(){
+                                    let valor = document.getElementById("filtro").value;
+                                    if(valor == "dia"){
+                                        document.getElementById("inputDia").hidden = false;
+                                        document.getElementById("inputMes").hidden = true;
+                                        document.getElementById("inputAnio").hidden = true;
+                                    }else if(valor == "mes"){
+                                        document.getElementById("inputDia").hidden = true;
+                                        document.getElementById("inputMes").hidden = false;
+                                        document.getElementById("inputAnio").hidden = true;
+                                    }else if(valor == "anio"){
+                                        document.getElementById("inputDia").hidden = true;
+                                        document.getElementById("inputMes").hidden = true;
+                                        document.getElementById("inputAnio").hidden = false;
+                                    }else{
+
+                                    }
+                                    
+                                });
+
+                                $("#inputDia").change(function(){
+                                    var id =document.getElementById("inputDia").value;
+                                    var url = "/reporteCompras/"+id;
+                                    document.getElementById("espera").hidden = false;
+                                    $("#carta").load(url);
+                                });
+                                $("#inputMes").change(function(){
+                                    var id =document.getElementById("inputMes").value;
+                                    var url = "/reporteCompras/"+id;
+                                    document.getElementById("espera").hidden = false;
+                                    $("#carta").load(url);
+                                });
+                                $("#inputAnio").change(function(){
+                                    var id =document.getElementById("inputAnio").value;
+                                    var url = "/reporteCompras/"+id;
+                                   
+                                    document.getElementById("espera").hidden = false;
+                                    $("#carta").load(url);
+                                });
+                            });
+
+                            function filtro(){
+                               
+                            }
+                        </script> 
+                        
+                       
+                    </div>
+                    <div class="card-body">
+                        <div class="overflow-auto p-0" style="height: 300px;">
+                            <div id="accordion">
+                                <label th:if="${compras.isEmpty()}" style="width: 100%; text-align: center; font-size: 20px;">No hay información para mostrar <br>
+                                    <i class="fa fa-files-o" style="color: black; font-size: 30px;"></i>
+                                </label>
+                                <div class="accordion-item" th:each="orden:${compras}">
+                                    <h2 class="accordion-header">
+            
+                                      <button class="accordion-button collapsed" data-toggle="collapse" th:data-target="${'#'+orden.id}" aria-expanded="false">
+                                                                               
+                                        <label style="font-weight: bold;">#</label><label style=" width: 10%;" th:text="${ordenStat.size - ordenStat.index}"></label>
+                                        <label style="font-weight: bold;">Total:&nbsp;</label><label style=" width: 15%;" th:text="${'$'+orden.precio}"></label>
+                                        <label style="font-weight: bold;">Fecha:&nbsp;</label><label style=" width: 20%;" th:text="${orden.dia+'/'+orden.mes+'/'+orden.anio}"></label>
+                                        <label style="font-weight: bold;">Hora:&nbsp;</label><label style=" width: 15%;"   th:text="${orden.horaPedido+':'+orden.minPedido}"></label>
+                                        <label style="font-weight: bold;">Usuario:&nbsp;</label><label style=" width: 15%;"  th:text="${ orden.Usuario.getuserName}"></label>
+                                       
+            
+                                      </button>
+                                    </h2>
+                                    <div th:id="${orden.id}" class="collapse" >
+                                        <div class="card-body">
+                                            <table class="table table-hover">
+                                                <thead align="center">
+                                                    <tr>
+                                                        <th>ÍTEM</th>
+                                                        <th>NOMBRE</th>
+                                                        <th>PRECIO</th>
+                                                        <th>CANTIDAD</th>
+                                                        <th>SUBTOTAL</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody  align="center">
+                                                    <tr th:each="detalle:${detalles.get(ordenStat.index)}">
+                                                            <td th:text="${detalleStat.index+1}"></td>
+                                                            <td th:text="${detalle.productoID.nombre}"></td>
+                                                            <td th:text="${'$'+detalle.subtotal/detalle.cantidadProducto}"></td>
+                                                            <td th:text="${detalle.cantidadProducto}"></td>
+                                                            <td th:text="${'$'+detalle.subtotal}"></td>
+                                                        </tr>
+            
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="funciones.js"></script>
+ <!--YEAR PICKER-->
+ <script src="yearpicker.js"></script>
+ <script>
+     $('.yearpicker').yearpicker()
+ </script>
+
+</body>
+
+</html>
